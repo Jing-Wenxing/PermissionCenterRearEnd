@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="atd.code.permission.mapper.RoleMapper">
+    <insert id="create" parameterType="atd.code.permission.entity.Role">
+        INSERT INTO permission_role
+            (name, role, description, level)
+        VALUES (#{name}, #{role}, #{description}, #{level})
+    </insert>
+
+    <select id="selectLength" resultType="Integer">
+        SELECT COUNT(*)
+        FROM permission_role
+    </select>
+
+    <select id="selectInfo" resultType="atd.code.permission.entity.Role">
+        SELECT *
+        FROM permission_role
+        ORDER BY level DESC, id
+            LIMIT #{start}, #{pageSize}
+    </select>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE
+        FROM permission_role
+        WHERE id = #{id}
+    </delete>
+</mapper>

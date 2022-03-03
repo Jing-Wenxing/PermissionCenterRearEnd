@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="atd.code.permission.mapper.FuncMapper">
+    <insert id="create" parameterType="atd.code.permission.entity.Function">
+        INSERT INTO permission_function
+            (name, permission, description, appid, second_per, level)
+        VALUES (#{name}, #{permission}, #{description}, #{appid}, #{second_per}, #{level})
+    </insert>
+
+    <select id="selectLength" resultType="Integer">
+        SELECT COUNT(*)
+        FROM permission_function
+        WHERE appid = #{appid}
+    </select>
+
+    <select id="selectInfo" resultType="atd.code.permission.entity.Function">
+        SELECT *
+        FROM permission_function
+        WHERE appid = #{appid}
+        ORDER BY permission, id
+            LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="getAppInfo" resultType="atd.code.permission.entity.App">
+        SELECT *
+        FROM permission_application
+        WHERE id = #{appid}
+    </select>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE
+        FROM permission_function
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="deletePermOfFunc" parameterType="Integer">
+        DELETE
+        FROM permission_authority
+        WHERE funcid = #{funcid}
+    </delete>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="atd.code.permission.mapper.UserMapper">
+    <select id="getUUIDToUserInfo" parameterType="String" resultType="atd.code.permission.entity.UserInfo">
+        SELECT *
+        FROM userinfos
+        WHERE uuid = #{uuid}
+    </select>
+
+    <select id="selectLength" resultType="Integer">
+        SELECT COUNT(*)
+        FROM userinfos
+    </select>
+
+    <select id="selectInfo" resultType="atd.code.permission.entity.User">
+        SELECT *
+        FROM userinfos
+                 INNER JOIN permission_role
+                            ON userinfos.roleid = permission_role.id
+        WHERE #{level} > level
+        ORDER BY roleid, fullname
+            LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="roleList" resultType="atd.code.permission.entity.Role">
+        SELECT *
+        FROM permission_role
+        WHERE #{level} > level
+        ORDER BY id
+    </select>
+
+    <select id="authorityList" resultType="atd.code.permission.entity.Authority">
+        SELECT *
+        FROM permission_authority
+        WHERE roleid = #{roleid}
+    </select>
+
+    <select id="getRoleInfo" resultType="atd.code.permission.entity.Role">
+        SELECT *
+        FROM permission_role
+        WHERE role = #{role}
+    </select>
+
+    <update id="updateUserRole" parameterType="String">
+        UPDATE userinfos
+        SET role   = #{role},
+            roleid = #{roleid}
+        WHERE uuid = #{uuid}
+    </update>
+</mapper>

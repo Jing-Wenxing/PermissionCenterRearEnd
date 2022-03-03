@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="atd.code.permission.mapper.PermMapper">
+    <select id="getAppList" resultType="atd.code.permission.entity.App">
+        SELECT *
+        FROM permission_application
+        ORDER BY port
+    </select>
+
+    <select id="getAppIdToFuncList" resultType="atd.code.permission.entity.Function">
+        SELECT *
+        FROM permission_function
+        WHERE appid = #{appid}
+        AND level &lt;= #{level}
+        ORDER BY permission, id
+    </select>
+
+    <select id="getRoleInfo" resultType="atd.code.permission.entity.Role">
+        SELECT *
+        FROM permission_role
+        WHERE id = #{roleid}
+    </select>
+
+    <select id="getUserInfo" resultType="atd.code.permission.entity.UserInfo">
+        SELECT *
+        FROM userinfos
+        WHERE uuid = #{uuid}
+    </select>
+
+    <select id="roleHasAuthority" resultType="atd.code.permission.entity.Authority">
+        SELECT *
+        FROM permission_authority
+        WHERE roleid = #{roleid}
+          AND funcid = #{funcid}
+    </select>
+
+    <insert id="create" parameterType="atd.code.permission.entity.Authority">
+        INSERT INTO permission_authority
+            (roleid, appid, funcid, permission)
+        VALUES (#{roleid}, #{appid}, #{funcid}, #{permission})
+    </insert>
+
+    <delete id="delete" parameterType="String">
+        DELETE
+        FROM permission_authority
+        WHERE id = #{id}
+    </delete>
+</mapper>
